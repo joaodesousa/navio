@@ -93,5 +93,3 @@ class NewFlight(ModelForm):
         super(NewFlight, self).__init__(*args, **kwargs)
         self.fields['date'].widget = forms.DateTimeInput(attrs={'class': 'form-control', 'data-target': '#datetimepicker1'})
         self.fields['flight_id'].widget = TextInput(attrs={'class': 'form-control'})
-        self.fields['company'].widget = forms.Select(attrs={'class': 'form-control'})
-        self.fields['airport'].widget = forms.Select(attrs={'class': 'form-control'})

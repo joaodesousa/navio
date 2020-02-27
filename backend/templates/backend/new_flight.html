@@ -1,5 +1,6 @@
 {% extends 'backend/base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}Novo Voo{% endblock %}
 {% block content %}
@@ -61,13 +62,13 @@
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-username">Companhia</label>
-                                    {{form.company}}
+                                    {{ form.company|add_class:"form-control" }}
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-username">Aeroporto</label>
-                                    {{form.airport}}
+                                    {{ form.airport|add_class:"form-control" }}
                                 </div>
                             </div>
                         </div>

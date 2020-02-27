@@ -1,5 +1,6 @@
 {% extends 'backend/base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}Nova Viagem{% endblock %}
 {% block content %}
@@ -57,7 +58,7 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-username">Cliente</label>
-                                        {{form.client}}
+                                        {{form.client|add_class:"form-control"}}
                                     </div>
                                 </div>
                             </div>
@@ -69,19 +70,19 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-first-name">Voo Ida</label>
-                                        {{form.out_flight}}
+                                        {{form.out_flight|add_class:"form-control"}}
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-last-name">Hotel</label>
-                                        {{form.hotel}}
+                                        {{form.hotel|add_class:"form-control"}}
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-username">Voo Regresso</label>
-                                        {{form.in_flight}}
+                                        {{form.in_flight|add_class:"form-control"}}
                                     </div>
                                 </div>
                             </div>
