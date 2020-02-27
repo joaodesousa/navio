@@ -1,0 +1,111 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+{% block title %}Viagem {{tdrs.trip_id}}{% endblock %}
+{% block content %}
+
+<!-- Header -->
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Viagens</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Detalhe</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{tdrs.trip_id}}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-transparent">
+                    <h3 class="mb-0">{{tdrs.trip_id}} - {{tdrs.destination}}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="timeline timeline-one-side" data-timeline-content="axis"
+                        data-timeline-axis-style="dashed">
+                        <div class="timeline-block">
+                            <span class="timeline-step badge-success">
+                                <i class="fas fa-plane-departure"></i>
+                            </span>
+                            <div class="timeline-content">
+                                {% for vs in vs %}
+                                <small class="text-muted font-weight-bold">{{vs.date}}</small>
+                                {% endfor %}
+                                <h4 class=" mt-3 mb-0">{{tdrs.out_flight}}</h4>
+                            </div>
+                        </div>
+                        <div class="timeline-block">
+                            <span class="timeline-step badge-danger">
+                                <i class="fas fa-concierge-bell"></i>
+                            </span>
+                            <div class="timeline-content">
+                                <small class="text-muted font-weight-bold">Hotel</small>
+                                <h4 class=" mt-3 mb-0">{{tdrs.hotel}}</h4>
+                            </div>
+                        </div>
+                        <div class="timeline-block">
+                            <span class="timeline-step badge-success">
+                                <i class="fas fa-plane-arrival"></i>
+                            </span>
+                            <div class="timeline-content">
+                                {% for ve in ve %}
+                                <small class="text-muted font-weight-bold">{{ve.date}}</small>
+                                {% endfor %}
+                                <h4 class=" mt-3 mb-0">{{tdrs.in_flight}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-md-4">
+            <!-- Progress track -->
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header">
+                    <!-- Title -->
+                    <h5 class="h3 mb-0">Cliente</h5>
+                </div>
+                <!-- Card body -->
+                <div class="card-body">
+                    <!-- List group -->
+                    <ul class="list-group list-group-flush list my--3">
+                        <li class="list-group-item px-0">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <!-- Avatar -->
+                                    {% for tdc in tdc %}
+                                    <a href="{% url 'clients' %}{{tdc.nif}}" class="avatar rounded-circle">
+                                        <img alt="Image placeholder"
+                                            src="{% static 'backend/assets/img/theme/bootstrap.jpg' %}">
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <h5><a href="{% url 'clients' %}/{{tdc.nif}}">{{tdc.user.first_name}} {{tdc.user.last_name}}</a></h5>
+                                    <div class="">
+                                        <small>{{tdc.user.email}} | {{tdc.mobile}}</small>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}

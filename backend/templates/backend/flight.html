@@ -1,0 +1,83 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+{% block title %}Voos{% endblock %}
+{% block content %}
+
+
+    <!-- Header -->
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <h6 class="h2 text-white d-inline-block mb-0">Voos</h6>
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item"><a href="#">Voos</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Lista</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-lg-6 col-5 text-right">
+              <a href="novo" class="btn btn-sm btn-neutral">Novo Voo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--5">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <!-- Card header -->
+            <div class="table-responsive py-4">
+              <table class="table table-flush" id="datatable-basic">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Ref. Voo</th>
+                    <th>Companhia</th>
+                    <th>Aeroporto</th>
+                    <th>Data</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Ref. Voo</th>
+                    <th>Companhia</th>
+                    <th>Aeroporto</th>
+                    <th>Data</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                {% for fs in fs %}
+                  <tr>
+                    <td>{{fs.flight_id}}</a></td>
+                    <td>{{fs.company}}</td>
+                    <td>{{fs.airport}}</td>
+                    <td>{{fs.date|date:"H:i / d F y "}}</td>
+                  </tr>
+                   {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+
+    {% endblock %}
+    {% block js %}
+{{ block.super }}
+  <!-- DataTables-->
+  <script src="{% static 'backend/assets/vendor/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'backend/assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'backend/assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'backend/assets/vendor/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'backend/assets/vendor/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+  <script src="{% static 'backend/assets/vendor/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+  <script src="{% static 'backend/assets/vendor/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+  <script src="{% static 'backend/assets/vendor/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+  {% endblock %}
