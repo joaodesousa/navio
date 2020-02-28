@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from .forms import SignUpForm, UpdateClient, NewTrip, NewHotel, NewFlight, NewCompany, NewAirport
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
-from datetime import datetime
+from django.utils import timezone
 
 
 # Dashboard
@@ -20,8 +20,11 @@ def backend(request):
     TripCount = Trip.objects.all().count()
     HotelCount = Hotels.objects.all().count()
     FlightCount = Flight.objects.all().count()
-    Going = Flight.objects.filter(date__gt=datetime.now()).order_by('date')
-    context = {'ClientCount': ClientCount, 'ClientsTrip': ClientsTrip, 'TripCount': TripCount, 'HotelCount': HotelCount, 'FlightCount': FlightCount, 'Going': Going}
+    Going = Flight.objects.filter(date__gt=timezone.now()).order_by('date')
+    ClientsArriving = Clients.objects.filter(trip__in_flight__date__gt=timezone.now())
+    ClientsLeaving = Clients.objects.filter(trip__out_flight__date__gt=timezone.now()) 
+    ClientsDash = ClientsArriving | ClientsArriving
+    context = {'ClientCount': ClientCount, 'ClientsTrip': ClientsTrip, 'TripCount': TripCount, 'HotelCount': HotelCount, 'FlightCount': FlightCount, 'Going': Going, 'ClientsDash': ClientsDash}
     return render(request, "backend/home.html", context)
 
 # Clients
