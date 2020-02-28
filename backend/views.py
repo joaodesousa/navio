@@ -5,8 +5,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Clients, Hotels, Trip, Flight
 from django.contrib.auth.models import User
-from .forms import SignUpForm, UpdateClient, NewTrip, NewHotel, NewFlight
+from .forms import SignUpForm, UpdateClient, NewTrip, NewHotel, NewFlight, NewCompany, NewAirport
 from django.views.generic.edit import UpdateView
+from django.db.models import Q
+from datetime import datetime
 
 
 # Dashboard
@@ -14,10 +16,12 @@ from django.views.generic.edit import UpdateView
 @login_required(login_url='./accounts/login/')
 def backend(request):
     ClientCount= Clients.objects.all().count()
+    ClientsTrip= Clients.objects.all()
     TripCount = Trip.objects.all().count()
     HotelCount = Hotels.objects.all().count()
     FlightCount = Flight.objects.all().count()
-    context = {'ClientCount': ClientCount, 'TripCount': TripCount, 'HotelCount': HotelCount, 'FlightCount': FlightCount}
+    Going = Flight.objects.filter(date__gt=datetime.now()).order_by('date')
+    context = {'ClientCount': ClientCount, 'ClientsTrip': ClientsTrip, 'TripCount': TripCount, 'HotelCount': HotelCount, 'FlightCount': FlightCount, 'Going': Going}
     return render(request, "backend/home.html", context)
 
 # Clients
@@ -134,3 +138,29 @@ def newflight(request):
     else:
         form = NewFlight()
     return render(request, 'backend/new_flight.html', {'form': form})
+
+# AirCompany
+
+@login_required(login_url='./accounts/login/')
+def newcompany(request):
+    if request.method == 'POST':
+        form = NewCompany(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('flights')
+    else:
+        form = NewCompany()
+    return render(request, 'backend/new_company.html', {'form': form})
+
+# Airport
+
+@login_required(login_url='./accounts/login/')
+def newairport(request):
+    if request.method == 'POST':
+        form = NewAirport(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('flights')
+    else:
+        form = NewAirport()
+    return render(request, 'backend/new_airport.html', {'form': form})

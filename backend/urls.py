@@ -18,4 +18,6 @@ urlpatterns = [
     path("flights/", views.flights, name="flights"),
     path("flights/novo/", views.newflight, name="newflight"),
     path("accounts/", include('django.contrib.auth.urls')),
+    path("companhia/novo/", views.newcompany, name="newcompany"),
+    path("aeroporto/novo/", views.newairport, name="newairport"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

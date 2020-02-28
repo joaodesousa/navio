@@ -37,9 +37,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                <form method="post">
+                    <form method="post">
                         {% csrf_token %}
-                 <!-- Address -->
+                        <!-- Address -->
                         <h6 class="heading-small text-muted mb-4">Referência</h6>
                         <div class="pl-lg-4">
                             <div class="row">
@@ -66,7 +66,7 @@
                         <hr class="my-4" />
                         <h6 class="heading-small text-muted mb-4">Dados Viagem</h6>
                         <div class="pl-lg-4">
-                        <div class="row">
+                            <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-first-name">Voo Ida</label>
@@ -82,11 +82,11 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-username">Voo Regresso</label>
-                                        {{form.in_flight|add_class:"form-control"}}
+                                        {{form.in_flight|append_attr:"class:form-control" }}
                                     </div>
                                 </div>
                             </div>
-                            </div>
+                        </div>
                         <button class="btn btn-primary" type="submit">Criar Viagem</button>
                     </form>
                 </div>

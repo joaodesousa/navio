@@ -1,7 +1,7 @@
 from django import forms
-from .models import Clients, Trip, Hotels, Flight, AirCompany
+from .models import Clients, Trip, Hotels, Flight, AirCompany, Airport
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.forms import TextInput,EmailInput,PasswordInput, ModelForm
+from django.forms import TextInput,EmailInput,PasswordInput, ModelForm, ModelChoiceField
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.views.generic.edit import UpdateView
@@ -54,15 +54,15 @@ class UpdateClient(ModelForm):
 
 class NewTrip(ModelForm):
 
-    class Meta:
-        model = Trip
-        fields = ('trip_id', 'destination', 'client', 'out_flight', 'hotel', 'in_flight')
-
-
     def __init__(self, *args, **kwargs):
         super(NewTrip, self).__init__(*args, **kwargs)
         self.fields['trip_id'].widget = TextInput(attrs={'class': 'form-control'})
         self.fields['destination'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['client'].queryset = Clients.objects.all()
+
+    class Meta:
+        model = Trip
+        fields = ('trip_id', 'destination', 'client', 'out_flight', 'hotel', 'in_flight')
 
 # Novo Hotel
 
@@ -93,3 +93,33 @@ class NewFlight(ModelForm):
         super(NewFlight, self).__init__(*args, **kwargs)
         self.fields['date'].widget = forms.DateTimeInput(attrs={'class': 'form-control', 'data-target': '#datetimepicker1'})
         self.fields['flight_id'].widget = TextInput(attrs={'class': 'form-control'})
+        
+
+
+# Nova Companhia
+
+class NewCompany(ModelForm):
+
+    class Meta:
+        model = AirCompany
+        fields = ('company_name',)
+
+
+    def __init__(self, *args, **kwargs):
+        super(NewCompany, self).__init__(*args, **kwargs)
+        self.fields['company_name'].widget = TextInput(attrs={'class': 'form-control'})
+
+# Novo Aeroporto
+
+class NewAirport(ModelForm):
+
+    class Meta:
+        model = Airport
+        fields = ('airport_name', 'airport_city', 'airport_country' )
+
+
+    def __init__(self, *args, **kwargs):
+        super(NewAirport, self).__init__(*args, **kwargs)
+        self.fields['airport_name'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['airport_city'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['airport_country'].widget = TextInput(attrs={'class': 'form-control'})

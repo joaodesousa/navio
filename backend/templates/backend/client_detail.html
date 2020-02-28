@@ -42,13 +42,13 @@
                                 <div class="col-auto">
                                     <!-- Avatar -->
 
-                                    <a href="{% url 'trips' %}{{ts.trip_id}}" class="avatar rounded-circle">
+                                    <a href="{% url 'trips' %}detail/{{ts.trip_id}}" class="avatar rounded-circle">
                                         <img alt="Image placeholder"
                                             src="{% static 'backend/assets/img/theme/bootstrap.jpg' %}">
                                     </a>
                                 </div>
                                 <div class="col">
-                                    <h5><a href="{% url 'trips' %}/{{ts.trip_id}}">{{ts.trip_id}}</a></h5>
+                                    <h5><a href="{% url 'trips' %}detail/{{ts.trip_id}}">{{ts.trip_id}}</a></h5>
                                     <div class="">
                                         <small>{{ts.destination}}</small>
                                     </div>
