@@ -43,6 +43,7 @@
                     <th>Morada</th>
                     <th>Cidade</th>
                     <th>Contacto</th>
+                    <th>Opções</th>
                   </tr>
                 </thead>
                 <tfoot>
@@ -51,6 +52,7 @@
                     <th>Morada</th>
                     <th>Cidade</th>
                     <th>Contacto</th>
+                    <th></th>
                   </tr>
                 </tfoot>
                 <tbody>
@@ -60,6 +62,7 @@
                     <td>{{hs.address}}</td>
                     <td>{{hs.city}}</td>
                     <td>{{hs.mobile}}</td>
+                    <td><a href="{{hs.id}}/update"><i class="fas fa-edit"></i></a> <a href="{{hs.id}}/delete" onclick="return confirm('Deseja mesmo apagar este item?');"><i class="fas fa-trash text-red ml-3"></i></a></td>
                   </tr>
                    {% endfor %}
                 </tbody>
@@ -71,6 +74,9 @@
     {% endblock %}
     {% block js %}
 {{ block.super }}
+  <script>
+    
+</script>
   <!-- DataTables-->
   <script src="{% static 'backend/assets/vendor/datatables.net/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static 'backend/assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>

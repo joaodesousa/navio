@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Clients, Hotels, Trip, Flight
 from django.contrib.auth.models import User
-from .forms import SignUpForm, UpdateClient, NewTrip, NewHotel, NewFlight, NewCompany, NewAirport
+from .forms import SignUpForm, UpdateClient, NewTrip, NewHotel, NewFlight, NewCompany, NewAirport, UpdateTrip, UpdateHotel, UpdateFlight
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 from django.utils import timezone
@@ -75,6 +75,12 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'backend/new_client.html', {'form': form})
 
+@login_required(login_url='../accounts/login/')
+def client_del(request, id):
+    object = User.objects.get(id=id)
+    object.delete()
+    return redirect('clients')    
+
 
 # Trips
 
@@ -104,6 +110,24 @@ def newtrip(request):
         form = NewTrip()
     return render(request, 'backend/new_trip.html', {'form': form})
 
+@login_required(login_url='../accounts/login/')
+def trip_upd(request, trip_id):
+    ts = Trip.objects.get(trip_id=trip_id)
+    if request.method == 'POST':
+        form = UpdateTrip(request.POST, instance=ts)
+        if form.is_valid():
+            form.save()
+            return redirect('trips')
+    else:
+        form = UpdateTrip(initial={'trip_id': ts.trip_id, 'destination': ts.destination, 'client': ts.client, 'out_flight': ts.out_flight, 'hotel': ts.hotel, 'in_flight': ts.in_flight})
+    return render(request, 'backend/trip_update.html', {'form': form, 'ts': ts})
+
+@login_required(login_url='../accounts/login/')
+def trip_del(request, trip_id):
+    object = Trip.objects.get(trip_id=trip_id)
+    object.delete()
+    return redirect('trips')
+
 # Hotel
 
 @login_required(login_url='./accounts/login/')
@@ -122,6 +146,24 @@ def newhotel(request):
     else:
         form = NewHotel()
     return render(request, 'backend/new_hotel.html', {'form': form})
+
+@login_required(login_url='../accounts/login/')
+def hotel_upd(request, id):
+    hs = Hotels.objects.get(id=id)
+    if request.method == 'POST':
+        form = UpdateHotel(request.POST, instance=hs)
+        if form.is_valid():
+            form.save()
+            return redirect('hotel')
+    else:
+        form = UpdateHotel(initial={'hotel_name': hs.hotel_name, 'address': hs.address, 'city': hs.city, 'mobile': hs.mobile})
+    return render(request, 'backend/hotel_update.html', {'form': form, 'hs': hs})
+
+@login_required(login_url='../accounts/login/')
+def hotel_del(request, id):
+    object = Hotels.objects.get(id=id)
+    object.delete()
+    return redirect('hotel')
 
 # Flight
 
@@ -142,6 +184,24 @@ def newflight(request):
         form = NewFlight()
     return render(request, 'backend/new_flight.html', {'form': form})
 
+@login_required(login_url='../accounts/login/')
+def flight_upd(request, id):
+    fs = Flight.objects.get(id=id)
+    if request.method == 'POST':
+        form = UpdateFlight(request.POST, instance=fs)
+        if form.is_valid():
+            form.save()
+            return redirect('flights')
+    else:
+        form = UpdateFlight(initial={'date': fs.date, 'flight_id': fs.flight_id, 'company': fs.company, 'airport': fs.airport})
+    return render(request, 'backend/flight_update.html', {'form': form, 'fs': fs})
+
+@login_required(login_url='../accounts/login/')
+def flight_del(request, id):
+    object = Flight.objects.get(id=id)
+    object.delete()
+    return redirect('flights')
+
 # AirCompany
 
 @login_required(login_url='./accounts/login/')
@@ -150,7 +210,7 @@ def newcompany(request):
         form = NewCompany(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('flights')
+            return redirect('newflight')
     else:
         form = NewCompany()
     return render(request, 'backend/new_company.html', {'form': form})
@@ -163,7 +223,7 @@ def newairport(request):
         form = NewAirport(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('flights')
+            return redirect('newflight')
     else:
         form = NewAirport()
     return render(request, 'backend/new_airport.html', {'form': form})

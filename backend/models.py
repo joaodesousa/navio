@@ -28,7 +28,7 @@ class Clients(models.Model):
     
 
 class Hotels(models.Model):
-    hotel_name = models.CharField(max_length=30, verbose_name="Nome", primary_key=True)
+    hotel_name = models.CharField(max_length=30, verbose_name="Nome")
     address = models.CharField(max_length=30, verbose_name="Morada")
     city = models.CharField(max_length=10, verbose_name="Cidade")
     mobile = models.CharField(max_length=9, verbose_name="Telemóvel", validators=[RegexValidator(r'^\d{1,10}$')])
@@ -40,7 +40,7 @@ class Hotels(models.Model):
         verbose_name_plural = "Hotéis"
 
 class AirCompany(models.Model):
-    company_name = models.CharField(max_length=10, verbose_name="Nome", primary_key=True)
+    company_name = models.CharField(max_length=10, verbose_name="Nome")
 
 
     def __str__(self):
@@ -73,7 +73,7 @@ class Flight(models.Model):
         verbose_name_plural = "Voos"
 
 class Trip(models.Model):
-    trip_id = models.CharField(max_length=20, verbose_name="Ref. Viagem", primary_key=True)
+    trip_id = models.CharField(max_length=20, verbose_name="Ref. Viagem")
     destination = models.CharField(max_length=200, null=True, verbose_name='Destino')
     client = models.ForeignKey(Clients, null=True, on_delete=models.CASCADE, verbose_name="Cliente")
     out_flight = models.ForeignKey(Flight, related_name="outbound_flight" ,null=True, on_delete=models.SET_NULL, verbose_name="Voo Ida")

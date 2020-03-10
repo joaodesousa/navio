@@ -43,6 +43,7 @@
                     <th>Companhia</th>
                     <th>Aeroporto</th>
                     <th>Data</th>
+                    <th>Opções</th>
                   </tr>
                 </thead>
                 <tfoot>
@@ -51,6 +52,7 @@
                     <th>Companhia</th>
                     <th>Aeroporto</th>
                     <th>Data</th>
+                    <th>Opções</th>
                   </tr>
                 </tfoot>
                 <tbody>
@@ -60,12 +62,15 @@
                     <td>{{fs.company}}</td>
                     <td>{{fs.airport}}</td>
                     <td>{{fs.date|date:"H:i / d F y "}}</td>
+                    <td><a href="{{fs.id}}/update"><i class="fas fa-edit"></i></a> <a href="{{fs.id}}/delete" onclick="return confirm('Deseja mesmo apagar este item?');"><i class="fas fa-trash text-red ml-3"></i></a></td>
                   </tr>
                    {% endfor %}
                 </tbody>
               </table>
             </div>
           </div>
+          
+
           
 
     {% endblock %}

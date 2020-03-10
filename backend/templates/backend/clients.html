@@ -44,6 +44,7 @@
                     <th>Apelido</th>
                     <th>Email</th>
                     <th>Telemóvel</th>
+                    <th>Opções</th>
                   </tr>
                 </thead>
                 <tfoot>
@@ -53,6 +54,7 @@
                     <th>Apelido</th>
                     <th>Email</th>
                     <th>Telemóvel</th>
+                    <th></th>
                   </tr>
                 </tfoot>
                 <tbody>
@@ -63,6 +65,7 @@
                     <td>{{u.last_name}}</td>
                     <td>{{u.email}}</td>
                     <td>{{u.clients.mobile}}</td>
+                    <td><a href="{{u.clients.nif}}/update"><i class="fas fa-edit"></i></a><a href="{{u.id}}/delete" onclick="return confirm('Deseja mesmo apagar este item?');"><i class="fas fa-trash text-red ml-3"></i></a></td>
                   </tr>
                    {% endfor %}
                 </tbody>

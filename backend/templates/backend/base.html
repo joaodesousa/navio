@@ -17,6 +17,7 @@
   <link href="{% static 'backend/assets/vendor/nucleo/css/nucleo.css' %}" rel="stylesheet">
   <link href="{% static 'backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
 
+  <link rel="stylesheet" href="{% static 'backend/assets/vendor/sweetalert2/dist/sweetalert2.min.css' %}">
   <!-- CSS -->
   <link type="text/css" href="{% static 'backend/assets/css/argon.min.css' %}" rel="stylesheet">
   <link rel="stylesheet"
@@ -178,6 +179,7 @@
   </div>
   {% block js %}
   <!-- Scripts -->
+  <script src="{% static 'backend/assets/vendor/sweetalert2/dist/sweetalert2.min.js' %}"></script>
   <!-- Core -->
   <script src="{% static 'backend/assets/vendor/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'backend/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
@@ -187,6 +189,7 @@
   {% endblock %}
   <!-- JS -->
   <script src="{% static 'backend/assets/js/argon.min.js' %}"></script>
+
 
 
 </body>

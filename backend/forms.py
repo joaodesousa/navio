@@ -64,6 +64,21 @@ class NewTrip(ModelForm):
         model = Trip
         fields = ('trip_id', 'destination', 'client', 'out_flight', 'hotel', 'in_flight')
 
+# Actualizar Viagem
+
+class UpdateTrip(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateTrip, self).__init__(*args, **kwargs)
+        self.fields['trip_id'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['destination'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['client'].queryset = Clients.objects.all()
+
+
+    class Meta:
+        model = Trip
+        fields = ('trip_id', 'destination', 'client', 'out_flight', 'hotel', 'in_flight')
+
 # Novo Hotel
 
 class NewHotel(ModelForm):
@@ -80,6 +95,22 @@ class NewHotel(ModelForm):
         self.fields['city'].widget = TextInput(attrs={'class': 'form-control'})
         self.fields['mobile'].widget = TextInput(attrs={'class': 'form-control', 'maxlength': '9'})
 
+# Actualizar Hotel
+
+class UpdateHotel(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateHotel, self).__init__(*args, **kwargs)
+        self.fields['hotel_name'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['address'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['city'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['mobile'].widget = TextInput(attrs={'class': 'form-control', 'maxlength': '9'})
+
+
+    class Meta:
+        model = Hotels
+        fields = ('hotel_name', 'address', 'city', 'mobile')
+
 # Novo Voo
 
 class NewFlight(ModelForm):
@@ -94,7 +125,19 @@ class NewFlight(ModelForm):
         self.fields['date'].widget = forms.DateTimeInput(attrs={'class': 'form-control', 'data-target': '#datetimepicker1'})
         self.fields['flight_id'].widget = TextInput(attrs={'class': 'form-control'})
         
+# Actualizar Voo
 
+class UpdateFlight(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateFlight, self).__init__(*args, **kwargs)
+        self.fields['date'].widget = forms.DateTimeInput(attrs={'class': 'form-control', 'data-target': '#datetimepicker1'})
+        self.fields['flight_id'].widget = TextInput(attrs={'class': 'form-control'})
+
+
+    class Meta:
+        model = Flight
+        fields = ('date', 'flight_id', 'company', 'airport')
 
 # Nova Companhia
 
