@@ -109,7 +109,7 @@
                 <div class="timeline-block">
                 {% for Going in Going %}
                   <span class="timeline-step badge-success">
-                    <i class="ni ni-bell-55"></i>
+                    <i class="fas fa-plane-departure"></i>
                   </span>
                   <div class="timeline-content">
                     <div class="d-flex justify-content-between pt-1">
@@ -118,6 +118,15 @@
                       </div>
                     </div>
                     <h6 class="text-sm mt-1 mb-0">{{Going}}</h6>
+                  </div>
+                  {% empty %}
+                  <span class="timeline-step badge-success">
+                    <i class="fas fa-plane-departure"></i>
+                  </span>
+                  <div class="timeline-content">
+                    <div class="d-flex justify-content-between pt-1">
+                    </div>
+                    <h4 class="text-muted">Sem Voos</h4>
                   </div>
                    {% endfor %}
                 </div>
@@ -147,6 +156,16 @@
                       </h4>
                       <i class="fas fa-phone fa-xs"></i>
                       <small>{{ClientsDash.mobile}}</small>
+                    </div>
+                  </div>
+                </li>
+                {% empty %}
+                <li class="list-group-item px-0">
+                  <div class="row align-items-center">
+                    <div class="col ml-1">
+                      <h4 class="mb-0 text-muted">
+                        Sem Clientes a Viajar
+                      </h4>
                     </div>
                   </div>
                 </li>
