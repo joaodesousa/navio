@@ -10,8 +10,6 @@ from django.dispatch import receiver
 class Clients(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=200, verbose_name="Morada")
-    city = models.CharField(max_length=200, verbose_name="Cidade")
-    postal = models.CharField(max_length=8, validators=[RegexValidator(r'^\d{4}(-\d{3})?$')], verbose_name="Código Postal")
     nif = models.CharField(max_length=9, verbose_name="NIF", validators=[RegexValidator(r'^\d{1,10}$')], unique=True, null=True)
     mobile = models.CharField(max_length=9, verbose_name="Telemóvel", validators=[RegexValidator(r'^\d{1,10}$')])
 
@@ -20,6 +18,12 @@ class Clients(models.Model):
 
     class Meta:
         verbose_name_plural = "Clientes"
+    
+    @receiver(post_save, sender=User)
+    def update_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Clients.objects.create(user=instance)
+            instance.clients.save()
 
     
 
@@ -69,12 +73,12 @@ class Flight(models.Model):
         verbose_name_plural = "Voos"
 
 class Trip(models.Model):
-    trip_id = models.CharField(max_length=20, unique=True, verbose_name="Ref. Viagem")
+    trip_id = models.CharField(max_length=20, verbose_name="Ref. Viagem")
     destination = models.CharField(max_length=200, null=True, verbose_name='Destino')
     client = models.ForeignKey(Clients, null=True, on_delete=models.CASCADE, verbose_name="Cliente")
-    out_flight = models.ForeignKey(Flight, related_name="outbound_flight" , null=True, on_delete=models.SET_NULL, verbose_name="Voo Ida")
+    out_flight = models.ForeignKey(Flight, related_name="outbound_flight" ,null=True, on_delete=models.SET_NULL, verbose_name="Voo Ida")
     hotel = models.ForeignKey(Hotels, null=True, on_delete=models.SET_NULL, verbose_name="Hotel")
-    in_flight = models.ForeignKey (Flight, related_name="inbound_flight", null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Voo Regresso")
+    in_flight = models.ForeignKey (Flight, related_name="inbound_flight", null=True, on_delete=models.SET_NULL, verbose_name="Voo Regresso")
     
     def __str__(self):
         return "%s" % (self.trip_id)

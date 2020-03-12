@@ -8,7 +8,7 @@
 <!-- Header -->
 <!-- Header -->
 <div class="header pb-6 d-flex align-items-center"
-    style="min-height: 500px;">
+    style="min-height: 500px; background-image: url(../../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
     <!-- Mask -->
     <span class="mask bg-gradient-default opacity-8"></span>
     <!-- Header container -->
@@ -36,90 +36,28 @@
                 <div class="card-body">
                     <!-- List group -->
                     <ul class="list-group list-group-flush list my--3">
-                        {% for TripDash in TripDash %}
+                        {% for ts in ts%}
                         <li class="list-group-item px-0">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <!-- Avatar -->
 
-                                    <a href="{% url 'trips' %}detail/{{TripDash.trip_id}}"
-                                        >
-                                        <i class="fas fa-route text-green fa-2x"></i>
+                                    <a href="{% url 'trips' %}detail/{{ts.trip_id}}" class="avatar rounded-circle">
+                                        <img alt="Image placeholder"
+                                            src="{% static 'backend/assets/img/theme/bootstrap.jpg' %}">
                                     </a>
                                 </div>
                                 <div class="col">
-                                    <h5><a href="{% url 'trips' %}detail/{{TripDash.trip_id}}">{{TripDash.trip_id}}</a>
-                                    </h5>
+                                    <h5><a href="{% url 'trips' %}detail/{{ts.trip_id}}">{{ts.trip_id}}</a></h5>
                                     <div class="">
-                                        <small>{{TripDash.destination}}</small>
+                                        <small>{{ts.destination}}</small>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
-                        {% empty %}
-                        <li class="list-group-item px-0">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <!-- Avatar -->
-                                        <i class="fas fa-route text-green fa-2x"></i>
-                                </div>
-                                <div class="col">
-                                    <h4>Sem Viagens
-                                    </h4>
+
                                 </div>
                             </div>
                         </li>
                         {% endfor %}
                     </ul>
-                </div>
-
-            </div>
-                <div class="accordion" id="accordion">
-                    <div class="card">
-                        <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne"
-                            aria-expanded="false" aria-controls="collapseOne">
-                            <h5 class="mb-0">Viagens Anteriores</h5>
-                        </div>
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush list my--3">
-                                    {% for PTripDash in PTripDash %}
-                                    <li class="list-group-item px-0">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <!-- Avatar -->
-                                                <a href="{% url 'trips' %}detail/{{PTripDash.trip_id}}"
-                                                    >
-                                                    <i class="fas fa-route text-red fa-2x"></i>
-                                                </a>
-                                            </div>
-                                            <div class="col">
-                                                <h5><a
-                                                        href="{% url 'trips' %}detail/{{PTripDash.trip_id}}">{{PTripDash.trip_id}}</a>
-                                                </h5>
-                                                <div class="">
-                                                    <small>{{PTripDash.destination}}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                        {% empty %}
-                        <li class="list-group-item px-0">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <!-- Avatar -->
-                                        <i class="fas fa-route text-red fa-2x"></i>
-                                </div>
-                                <div class="col">
-                                    <h4>Sem Viagens
-                                    </h4>
-                                </div>
-                            </div>
-                        </li>
-                                    {% endfor %}
-                                </ul>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -194,22 +132,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-address">Cidade</label>
-                                        <input id="input-address" class="form-control" placeholder="{{ls.city}}"
-                                            type="text" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-address">Código Postal</label>
-                                        <input id="input-address" class="form-control" placeholder="{{ls.postal}}"
-                                            type="text" readonly>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </form>
                 </div>

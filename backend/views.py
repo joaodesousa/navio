@@ -2,10 +2,10 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required, user_passes_test, login_required
+from django.contrib.auth.decorators import login_required
 from .models import Clients, Hotels, Trip, Flight
-from django.contrib.auth.models import User, Group
-from .forms import SignUpForm, UpdateClient, NewTrip, NewHotel, NewFlight, NewCompany, NewAirport, UpdateTrip, UpdateHotel, UpdateFlight, NewEmployee
+from django.contrib.auth.models import User
+from .forms import SignUpForm, UpdateClient, NewTrip, NewHotel, NewFlight, NewCompany, NewAirport, UpdateTrip, UpdateHotel, UpdateFlight
 from django.views.generic.edit import UpdateView
 from django.db.models import Q
 from django.utils import timezone
@@ -14,7 +14,6 @@ from django.utils import timezone
 # Dashboard
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def backend(request):
     ClientCount= Clients.objects.all().count()
     ClientsTrip= Clients.objects.all()
@@ -22,35 +21,21 @@ def backend(request):
     HotelCount = Hotels.objects.all().count()
     FlightCount = Flight.objects.all().count()
     Going = Flight.objects.filter(date__gt=timezone.now()).order_by('date')
-    ClientsDash = Clients.objects.filter(Q(trip__in_flight__date__gt=timezone.now()) | Q(trip__out_flight__date__gt=timezone.now())).distinct()
+    ClientsArriving = Clients.objects.filter(trip__in_flight__date__gt=timezone.now())
+    ClientsLeaving = Clients.objects.filter(trip__out_flight__date__gt=timezone.now()) 
+    ClientsDash = ClientsArriving | ClientsArriving
     context = {'ClientCount': ClientCount, 'ClientsTrip': ClientsTrip, 'TripCount': TripCount, 'HotelCount': HotelCount, 'FlightCount': FlightCount, 'Going': Going, 'ClientsDash': ClientsDash}
     return render(request, "backend/home.html", context)
-
-@login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
-def newemployee(request):
-    if request.method == 'POST':
-        form = NewEmployee(request.POST)
-        if form.is_valid():
-            user = form.save()
-            group = Group.objects.get(name='Employees')
-            user.groups.add(group)
-            return redirect('backend')
-    else:
-        form = NewEmployee()
-    return render(request, 'backend/new_employee.html', {'form': form})
 
 # Clients
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def clients(request):
-    u = Clients.objects.all()
+    u = User.objects.filter(is_superuser=False)
     context= {'u': u}
     return render(request, "backend/clients.html", context)
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def client_upd(request, nif):
     ls= Clients.objects.get(nif=nif)
     if request.method == 'POST':
@@ -59,40 +44,38 @@ def client_upd(request, nif):
             user = form.save()
             user.refresh_from_db()
             user.clients.address = form.cleaned_data.get('address')
-            user.clients.city = form.cleaned_data.get('city')
-            user.clients.postal = form.cleaned_data.get('postal')
             user.clients.nif = form.cleaned_data.get('nif')
             user.clients.mobile = form.cleaned_data.get('mobile')
             user.clients.save()
             return redirect('clients')
     else:
-        form = UpdateClient(instance=ls.user, initial={'nif': ls.user.clients.nif, 'mobile': ls.user.clients.mobile, 'address': ls.user.clients.address, 'city': ls.user.clients.city, 'postal': ls.user.clients.postal})
+        form = UpdateClient(instance=ls.user, initial={'nif': ls.user.clients.nif, 'mobile': ls.user.clients.mobile, 'address': ls.user.clients.address })
     return render(request, 'backend/client_update.html', {'form': form, 'ls': ls})
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def client_det(request, nif):
    ls= Clients.objects.get(nif=nif)
    ts= Trip.objects.filter(client = ls)
-   TripDash = (Trip.objects.filter(client = ls).filter(Q(in_flight__date__gt=timezone.now()) | Q(out_flight__date__gt=timezone.now())))
-   PTripDash = (Trip.objects.filter(client = ls).filter(Q(in_flight__date__lt=timezone.now()) | Q(out_flight__date__lt=timezone.now())))
-   context = {'ls': ls, 'ts' : ts, 'TripDash': TripDash, 'PTripDash': PTripDash}
+   context = {'ls': ls, 'ts' : ts}
    return render(request, "backend/client_detail.html", context)
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()  # this creates the user with first_name, email and last_name as well!
+            user.refresh_from_db()  # load the profile instance created by the signal
+            user.clients.address = form.cleaned_data.get('address')
+            user.clients.nif = form.cleaned_data.get('nif')
+            user.clients.mobile = form.cleaned_data.get('mobile')
+            user.clients.save()
             return redirect('clients')
     else:
         form = SignUpForm()
     return render(request, 'backend/new_client.html', {'form': form})
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def client_del(request, id):
     object = User.objects.get(id=id)
     object.delete()
@@ -102,14 +85,12 @@ def client_del(request, id):
 # Trips
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def trips(request):
     trs= Trip.objects.all()
     context= {'trs' : trs}
     return render(request, "backend/trips.html", context)
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def trip_det(request, trip_id):
     tdrs= Trip.objects.get(trip_id=trip_id)
     tdc = Clients.objects.filter(trip=tdrs)
@@ -119,7 +100,6 @@ def trip_det(request, trip_id):
     return render(request, "backend/trips_det.html", context)
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def newtrip(request):
     if request.method == 'POST':
         form = NewTrip(request.POST)
@@ -131,7 +111,6 @@ def newtrip(request):
     return render(request, 'backend/new_trip.html', {'form': form})
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def trip_upd(request, trip_id):
     ts = Trip.objects.get(trip_id=trip_id)
     if request.method == 'POST':
@@ -144,7 +123,6 @@ def trip_upd(request, trip_id):
     return render(request, 'backend/trip_update.html', {'form': form, 'ts': ts})
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def trip_del(request, trip_id):
     object = Trip.objects.get(trip_id=trip_id)
     object.delete()
@@ -153,14 +131,12 @@ def trip_del(request, trip_id):
 # Hotel
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def hotel (request):
     hs= Hotels.objects.all()
     context= {'hs' : hs}
     return render(request, "backend/hotel.html", context)
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def newhotel(request):
     if request.method == 'POST':
         form = NewHotel(request.POST)
@@ -172,7 +148,6 @@ def newhotel(request):
     return render(request, 'backend/new_hotel.html', {'form': form})
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def hotel_upd(request, id):
     hs = Hotels.objects.get(id=id)
     if request.method == 'POST':
@@ -185,7 +160,6 @@ def hotel_upd(request, id):
     return render(request, 'backend/hotel_update.html', {'form': form, 'hs': hs})
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def hotel_del(request, id):
     object = Hotels.objects.get(id=id)
     object.delete()
@@ -194,14 +168,12 @@ def hotel_del(request, id):
 # Flight
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def flights (request):
     fs= Flight.objects.all()
     context= {'fs' : fs}
     return render(request, "backend/flight.html", context)
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def newflight(request):
     if request.method == 'POST':
         form = NewFlight(request.POST)
@@ -213,7 +185,6 @@ def newflight(request):
     return render(request, 'backend/new_flight.html', {'form': form})
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def flight_upd(request, id):
     fs = Flight.objects.get(id=id)
     if request.method == 'POST':
@@ -226,7 +197,6 @@ def flight_upd(request, id):
     return render(request, 'backend/flight_update.html', {'form': form, 'fs': fs})
 
 @login_required(login_url='../accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def flight_del(request, id):
     object = Flight.objects.get(id=id)
     object.delete()
@@ -235,7 +205,6 @@ def flight_del(request, id):
 # AirCompany
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def newcompany(request):
     if request.method == 'POST':
         form = NewCompany(request.POST)
@@ -249,7 +218,6 @@ def newcompany(request):
 # Airport
 
 @login_required(login_url='./accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
 def newairport(request):
     if request.method == 'POST':
         form = NewAirport(request.POST)

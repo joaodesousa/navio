@@ -26,8 +26,6 @@
     href="{% static 'backend/assets/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}">
   <link rel="stylesheet"
     href="{% static 'backend/assets/vendor/datatables.net-select-bs4/css/select.bootstrap4.min.css' %}">
-
-
 </head>
 
 
@@ -121,7 +119,7 @@
                 aria-expanded="false">
                 <div class="media align-items-center">
                   <span class="avatar avatar-sm rounded-circle">
-                    <i class="far fa-user-circle fa-lg"></i>
+                    <i class="far fa-user-circle"></i>
                   </span>
                   <div class="media-body  ml-2  d-none d-lg-block">
                     <span class="mb-0 text-sm  font-weight-bold">{{us.first_name}}</span>
@@ -149,7 +147,7 @@
                   <span>Support</span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="{% url 'logout' %}" class="dropdown-item">
+                <a href="#!" class="dropdown-item">
                   <i class="ni ni-user-run"></i>
                   <span>Logout</span>
                 </a>
@@ -181,7 +179,7 @@
   </div>
   {% block js %}
   <!-- Scripts -->
-  
+  <script src="{% static 'backend/assets/vendor/sweetalert2/dist/sweetalert2.min.js' %}"></script>
   <!-- Core -->
   <script src="{% static 'backend/assets/vendor/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'backend/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
