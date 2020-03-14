@@ -1,0 +1,124 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block title %}Perfil{% endblock %}
+{% block content %}
+
+<div class="wrapper">
+  <div class="section-shaped my-0 skew-separator skew-mini">
+    <div class="page-header page-header-small header-filter">
+      <div class="page-header-image"
+        style="background-image: url({% static 'frontend/assets/img/pages/georgie.jpg' %});">
+      </div>
+      <div class="container">
+        <div class="header-body text-center mb-7">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-6 col-md-8 px-5">
+              <h1 class="text-white">Perfil</h1>
+              <p class="text-lead text-white">Estas são as informações que disponhomos sobre você...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mb-9">
+    <div class="container bg-white card mb-0">
+      <div class="row">
+      </div>
+      <div class="col-md-12 ml-auto">
+        <div class="section">
+          <div class="tab-content">
+            <div class="tab-pane active" id="link1">
+              <div>
+                <header>
+                  <h2 class="text-uppercase">Informação Geral</h2>
+                </header>
+                <hr class="line-primary"><br>
+                <div class="row">
+                  <div class="col-md-3 align-self-center">
+                    <label class="labels" for="#phone">Nome</label>
+                  </div>
+                  <div class="col-md-4 align-self-center">
+                    <div class="form-group">
+                      <input class="form-control" type="text" disabled value="{{user.first_name}}">
+                    </div>
+                  </div>
+                  <div class="col-md-5 align-self-center">
+                    <div class="form-group">
+                      <input class="form-control" type="text" disabled value="{{user.last_name}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 align-self-center">
+                    <label class="labels" for="#email">Email</label>
+                  </div>
+                  <div class="col-md-9 align-self-center">
+                    <div class="form-group">
+                      <input class="form-control" type="text" disabled value="{{user.email}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 align-self-center">
+                    <label class="labels" for="#confirmEmail">Contacto</label>
+                  </div>
+                  <div class="col-md-9 align-self-center">
+                    <div class="form-group">
+                      <input class="form-control" type="text" disabled value="{{user.clients.mobile}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 align-self-center">
+                    <label class="labels" for="#location">Morada</label>
+                  </div>
+                  <div class="col-md-9 align-self-center">
+                    <div class="form-group">
+                      <input class="form-control" type="text" disabled value="{{user.clients.address}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 align-self-center">
+                    <label class="labels" for="#phone">Cidade</label>
+                  </div>
+                  <div class="col-md-5 align-self-center">
+                    <div class="form-group">
+                      <input class="form-control" type="text" disabled value="{{user.clients.city}}">
+                    </div>
+                  </div>
+                  <div class="col-md-4 align-self-center">
+                    <div class="form-group">
+                      <input class="form-control" type="text" disabled value="{{user.clients.postal}}">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3 align-self-center">
+                    <label class="labels">NIF</label>
+                  </div>
+                  <div class="col-md-4 align-self-center">
+                    <div class="form-group">
+                      <input class="form-control" type="text" disabled value="{{user.clients.nif}}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row justify-content-center mt-5">
+                  <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <span class="alert-inner--icon"><i class="ni ni-bell-55"></i></span>
+                    <span class="alert-inner--text"><strong>Info!</strong> Para alterar os seus dados, entre em contacto connosco.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

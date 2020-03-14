@@ -1,88 +1,50 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
+{% load get_group %}
 
-{% block title %}Login{% endblock %}
-{% block content %}
+{% block title %}Log In{% endblock %}
+{% block content%}
 
-
-<!-- Main content -->
-<div class="main-content">
-    <!-- Header -->
-    <div class="header bg-gradient-primary py-7">
-        <div class="container">
-            <div class="header-body text-center mb-7">
-                <div class="row justify-content-center">
-                    <div class="col-xl-5 col-lg-6 col-md-8 px-5">
-                        <h1 class="text-white">Login</h1>
-                        {% if next %}
-                        {% if user.is_authenticated %}
-                        <p class="text-lead text-white">Your account doesn't have access to this page. To proceed,
-                            please login with an account that has access.</p>
-                        {% else %}
-                        <p class="text-lead text-white">Por favor, faça login para ver esta página.</p>
-                        {% endif %}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="separator separator-bottom separator-skew zindex-100">
-            <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
-                xmlns="http://www.w3.org/2000/svg">
-                <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
-            </svg>
-        </div>
-    </div>
-    <!-- Page content -->
-    <div class="container mt--8 pb-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-7">
-                <div class="card bg-secondary border-0 mb-0">
-                    <div class="card-body px-lg-5 py-lg-5">
-                        <form role="form" method="post" action="{% url 'login' %}">
+<body class="register-page">
+  <div class="wrapper">
+    <div class="page-header bg-default">
+      <div class="page-header-image"
+                style="background-image: url({% static 'frontend/assets/img/ill/reset.svg' %})"></div>
+      <div class="container" id="container">
+        <div class="form-container sign-in-container">
+          <form role="form" method="post">
                             {% csrf_token %}
-                            <div class="form-group mb-3">
-                                <div class="input-group input-group-merge input-group-alternative">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                    </div>
-                                    <input class="form-control" id="id_username" name="username"
-                                        placeholder="Utilizador" type="text">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group input-group-merge input-group-alternative">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
-                                    </div>
-                                    <input class="form-control" placeholder="Password" type="password" id="id_password"
-                                        name="password">
-                                </div>
-                                {% if form.errors %}
-                                <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                                    <span class="alert-text"><strong>Erro!</strong> Utilizador ou Palavra-Passe
-                                        errados.</span>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" value="login" class="btn btn-primary my-4">Entrar</button>
-                                <input type="hidden" name="next" value="{{ next }}" />
-                            </div>
-                        </form>
-                    </div>
+            <h2 class="mb-4">Log In</h2>
+            <div class="form-group mb-3">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-single-02"></i></span>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <a href="{% url 'password_reset' %}" class="text-light"><small>Esqueci-me da palavra-passe</small></a>
-                    </div>
-                </div>
+                {{ form.username|add_class:"form-control"|attr:"placeholder:Utilizador" }}
+              </div>
             </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                </div>
+                {{ form.password|add_class:"form-control"|attr:"placeholder:Palavra-Passe" }}
+              </div>
+            </div>
+            <a href="{% url 'password_reset' %}">Esqueceu-se da sua palavra-passe?</a>
+            <button type="submit" class="btn btn-primary mt-3">Entrar</button>
+          </form>
         </div>
+        <div class="overlay-container">
+          <div class="overlay">
+            <div class="overlay-panel overlay-right">
+              <h1 class="text-white">Bem vindo!</h1>
+              <p>Introduza os seus dados para entrar na plataforma.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
 
-{% endblock %}
+        {% endblock %}

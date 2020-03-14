@@ -214,7 +214,7 @@ class NewEmployee(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2')
+        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'email')
     
     def __init__(self, *args, **kwargs):
         super(NewEmployee, self).__init__(*args, **kwargs)
@@ -224,3 +224,15 @@ class NewEmployee(UserCreationForm):
         self.fields['first_name'].widget = TextInput(attrs={'class': 'form-control'})
         self.fields['last_name'].widget = TextInput(attrs={'class': 'form-control'})
         self.fields['email'].widget = EmailInput(attrs={'class': 'form-control', 'placeholder': 'nome@dominio.com'})
+
+    def save(self):
+       user = super().save()
+       group = Group.objects.get(name='Employees')
+       user.groups.add(group)
+       cleaned_data = self.cleaned_data
+       User.objects.create(
+           first_name=cleaned_data.get('first_name'),
+           last_name=cleaned_data.get('last_name'),
+           email=cleaned_data.get('email')
+       )
+       return user
