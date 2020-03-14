@@ -1,4 +1,6 @@
 {% load static %}
+{% load get_group %}
+
 
 <html>
 
@@ -136,7 +138,17 @@
                   <i class="ni ni-settings-gear-65"></i>
                   <span>Alterar Palavra-Passe</span>
                 </a>
+                {% if request.user|has_group:"Admin" %}
+                <a href="{% url 'newemployee' %}" class="dropdown-item">
+                  <i class="fas fa-user-plus"></i>
+                  <span>Adicionar Funcionário</span>
+                </a>
+                {% endif %}
                 <div class="dropdown-divider"></div>
+                <a href="{% url 'frontend' %}" class="dropdown-item">
+                  <i class="ni ni-world-2"></i>
+                  <span>Frontend</span>
+                </a>
                 <a href="{% url 'logout' %}" class="dropdown-item">
                   <i class="ni ni-user-run"></i>
                   <span>Logout</span>

@@ -21,8 +21,8 @@
         </div>
     </div>
      <div class="col-lg-6 col-5 text-right">
-              <a href="{% url 'newcompany' %}" class="btn btn-sm btn-neutral">Nova Companhia</a>
-              <a href="{% url 'newairport' %}" class="btn btn-sm btn-neutral">Novo Aeroporto</a>
+              <a href="{% url 'newcompany' %}?next={{request.path}}" class="btn btn-sm btn-neutral">Nova Companhia</a>
+              <a href="{% url 'newairport' %}?next={{request.path}}" class="btn btn-sm btn-neutral">Novo Aeroporto</a>
             </div>
 </div>
 <!-- Page content -->

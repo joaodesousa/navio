@@ -42,8 +42,8 @@
                                 <i class="fas fa-plane-departure"></i>
                             </span>
                             <div class="timeline-content">
-                                {% for vs in vs %}
-                                <small class="text-muted font-weight-bold">{{vs.date}}</small>
+                                {% for ve in ve %}
+                                <small class="text-muted font-weight-bold">{{ve.date}}</small>
                                 {% endfor %}
                                 <h4 class=" mt-3 mb-0">{{tdrs.out_flight}}</h4>
                             </div>
@@ -54,7 +54,11 @@
                             </span>
                             <div class="timeline-content">
                                 <small class="text-muted font-weight-bold">Hotel</small>
+                                {% if tdrs.hotel == None %}
+                                <h4 class=" mt-1 mb-0">Sem Hotel</h4>
+                            {% else %}
                                 <h4 class=" mt-3 mb-0">{{tdrs.hotel}}</h4>
+                            {% endif %}
                             </div>
                         </div>
                         <div class="timeline-block">
@@ -62,10 +66,15 @@
                                 <i class="fas fa-plane-arrival"></i>
                             </span>
                             <div class="timeline-content">
-                                {% for ve in ve %}
-                                <small class="text-muted font-weight-bold">{{ve.date}}</small>
+                            {% if tdrs.in_flight == None %}
+                                <small class="text-muted font-weight-bold">Voo</small>
+                                <h4 class=" mt-3 mb-0">Sem Voo de Regresso</h4>
+                            {% else %}
+                                {% for vs in vs %}
+                                <small class="text-muted font-weight-bold">{{vs.date}}</small>
                                 {% endfor %}
                                 <h4 class=" mt-3 mb-0">{{tdrs.in_flight}}</h4>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

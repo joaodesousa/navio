@@ -73,7 +73,7 @@ class Trip(models.Model):
     destination = models.CharField(max_length=200, null=True, verbose_name='Destino')
     client = models.ForeignKey(Clients, null=True, on_delete=models.CASCADE, verbose_name="Cliente")
     out_flight = models.ForeignKey(Flight, related_name="outbound_flight" , null=True, on_delete=models.SET_NULL, verbose_name="Voo Ida")
-    hotel = models.ForeignKey(Hotels, null=True, on_delete=models.SET_NULL, verbose_name="Hotel")
+    hotel = models.ForeignKey(Hotels, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Hotel")
     in_flight = models.ForeignKey (Flight, related_name="inbound_flight", null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Voo Regresso")
     
     def __str__(self):

@@ -66,8 +66,16 @@
                     <td>{{trs.client}}</td>
                     <td>{{trs.destination}}</td>
                     <td>{{trs.out_flight}}</td>
+                    {% if trs.hotel == None %}
+                    <td>Sem Hotel</td>
+                    {% else %}   
                     <td>{{trs.hotel}}</td>
+                    {% endif %}
+                    {% if trs.in_flight == None %}
+                    <td>Sem Voo</td>
+                    {% else %}        
                     <td>{{trs.in_flight}}</td>
+                    {% endif %}
                     <td><a href="detail/{{trs.trip_id}}/update"><i class="fas fa-edit"></i></a> <a href="detail/{{trs.trip_id}}/delete" onclick="return confirm('Deseja mesmo apagar este item?');"><i class="fas fa-trash text-red ml-3"></i></a></td>
                   </tr>
                    {% endfor %}

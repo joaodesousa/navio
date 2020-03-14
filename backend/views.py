@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test, login_required
+from django.views.decorators.cache import cache_control
 from .models import Clients, Hotels, Trip, Flight
 from django.contrib.auth.models import User, Group
 from .forms import SignUpForm, UpdateClient, NewTrip, NewHotel, NewFlight, NewCompany, NewAirport, UpdateTrip, UpdateHotel, UpdateFlight, NewEmployee
@@ -15,6 +16,7 @@ from django.utils import timezone
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def backend(request):
     ClientCount= Clients.objects.all().count()
     ClientsTrip= Clients.objects.all()
@@ -27,7 +29,8 @@ def backend(request):
     return render(request, "backend/home.html", context)
 
 @login_required(login_url='/accounts/login/')
-@user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@user_passes_test(lambda u: u.groups.filter(name='Admin').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def newemployee(request):
     if request.method == 'POST':
         form = NewEmployee(request.POST)
@@ -42,6 +45,7 @@ def newemployee(request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def clients(request):
     u = Clients.objects.all()
     context= {'u': u}
@@ -49,6 +53,7 @@ def clients(request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def client_upd(request, nif):
     ls= Clients.objects.get(nif=nif)
     if request.method == 'POST':
@@ -69,6 +74,7 @@ def client_upd(request, nif):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def client_det(request, nif):
    ls= Clients.objects.get(nif=nif)
    ts= Trip.objects.filter(client = ls)
@@ -79,6 +85,7 @@ def client_det(request, nif):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -91,6 +98,7 @@ def signup(request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def client_del(request, id):
     object = User.objects.get(id=id)
     object.delete()
@@ -101,6 +109,7 @@ def client_del(request, id):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def trips(request):
     trs= Trip.objects.all()
     context= {'trs' : trs}
@@ -108,6 +117,7 @@ def trips(request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def trip_det(request, trip_id):
     tdrs= Trip.objects.get(trip_id=trip_id)
     tdc = Clients.objects.filter(trip=tdrs)
@@ -118,6 +128,7 @@ def trip_det(request, trip_id):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def newtrip(request):
     if request.method == 'POST':
         form = NewTrip(request.POST)
@@ -130,6 +141,7 @@ def newtrip(request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def trip_upd(request, trip_id):
     ts = Trip.objects.get(trip_id=trip_id)
     if request.method == 'POST':
@@ -152,6 +164,7 @@ def trip_del(request, trip_id):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def hotel (request):
     hs= Hotels.objects.all()
     context= {'hs' : hs}
@@ -159,6 +172,7 @@ def hotel (request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def newhotel(request):
     if request.method == 'POST':
         form = NewHotel(request.POST)
@@ -171,6 +185,7 @@ def newhotel(request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def hotel_upd(request, id):
     hs = Hotels.objects.get(id=id)
     if request.method == 'POST':
@@ -184,6 +199,7 @@ def hotel_upd(request, id):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def hotel_del(request, id):
     object = Hotels.objects.get(id=id)
     object.delete()
@@ -193,6 +209,7 @@ def hotel_del(request, id):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def flights (request):
     fs= Flight.objects.all()
     context= {'fs' : fs}
@@ -200,6 +217,7 @@ def flights (request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def newflight(request):
     if request.method == 'POST':
         form = NewFlight(request.POST)
@@ -212,6 +230,7 @@ def newflight(request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def flight_upd(request, id):
     fs = Flight.objects.get(id=id)
     if request.method == 'POST':
@@ -225,6 +244,7 @@ def flight_upd(request, id):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def flight_del(request, id):
     object = Flight.objects.get(id=id)
     object.delete()
@@ -234,6 +254,7 @@ def flight_del(request, id):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def newcompany(request):
     if request.method == 'POST':
         form = NewCompany(request.POST)
@@ -248,6 +269,7 @@ def newcompany(request):
 
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.groups.filter(name='Employees').exists())
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def newairport(request):
     if request.method == 'POST':
         form = NewAirport(request.POST)
